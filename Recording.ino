@@ -12,12 +12,12 @@
 #include "dl_lib.h"
 #include "driver/rtc_io.h"
 
-#define TIME_TO_SLEEP  3        /* Delay for picture taking (in seconds) */
-#define initDelay 30            /* Optional Time ESP32 will sleep on first boot in seconds*/
+#define PICTURE_DELAY  3        /* Delay for picture taking (in seconds) */
+#define STARTUP_DELAY 30            /* Optional Time ESP32 will sleep on first boot in seconds*/
 #define uS_TO_S_FACTOR 1000000  /* Conversion factor for micro seconds to seconds */
 
-#ifdef initDelay 
-  const uint64_t totalTimeSleep = uS_TO_S_FACTOR * initDelay; /*Avoid integer overflow using unsigned 64 bit int*/
+#ifdef STARTUP_DELAY 
+  const uint64_t totalTimeSleep = uS_TO_S_FACTOR * STARTUP_DELAY; /*Avoid integer overflow using unsigned 64 bit int*/
 #else
   const byte totalTimeSleep = 0; //skip through the initial sleep and continue with regular code execution
 #endif
@@ -56,7 +56,7 @@ void setup() {
       digitalWrite(LED_1, LOW);delay(200);
     }
     //Go to sleep
-    Serial.printf("Going to sleep for %d seconds",initDelay);
+    Serial.printf("Going to sleep for %d seconds",STARTUP_DELAY);
     esp_deep_sleep_start();
   }else{rtc_gpio_hold_dis(GPIO_NUM_4);} //Re-enable GPIO 4 for SD Card
   
@@ -82,6 +82,30 @@ void setup() {
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
   config.pixel_format = PIXFORMAT_JPEG; 
+
+  //**Camera Effects**
+  //sensor_t * s = esp_camera_sensor_get();
+  //s->set_quality(s, 10);
+  //s->set_brightness(s, 0);
+  //s->set_contrast(s, 0);
+  //s->set_saturation(s, 1);
+  //s->set_sharpness(s, 0);
+  //s->set_wb_mode(s, 0);
+  //s->set_awb_gain(s, 1);
+  //s->set_aec_value(s, 1);
+  //s->set_aec2(s, 0);
+  //s->set_ae_level(s, 0);
+  //s->set_aec_value(s, 168);
+  //s->set_agc_gain(s, 0);
+  //s->set_gainceiling(s, (gainceiling_t)1); 
+  //s->set_bpc(s, 0);
+  //s->set_wpc(s, 1);
+  //s->set_raw_gma(s, 1);
+  //s->set_lenc(s, 1);
+  //s->set_vflip(s, 0);
+  //s->set_hmirror(s, 0); 
+  //s->set_whitebal(s, 1);
+  //s->set_dcw(s, 1);
   
   // Camera Quality assuming 3.8GB of usable space
   // FRAMESIZE_ + QVGA|CIF|VGA|SVGA|XGA|SXGA|UXGA
@@ -123,7 +147,7 @@ void setup() {
   pinMode(4, OUTPUT);
   digitalWrite(4, LOW);
   rtc_gpio_hold_en(GPIO_NUM_4); //Latch value when going into deep sleep
-  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
+  esp_sleep_enable_timer_wakeup(PICTURE_DELAY * uS_TO_S_FACTOR);
   esp_deep_sleep_start(); //Restart cam
 }
 
