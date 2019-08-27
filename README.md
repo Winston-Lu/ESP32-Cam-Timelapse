@@ -5,10 +5,16 @@ Can be uploaded to the module using the default partition scheme
 
 # Programming
 Here is the ESP32-CAM module, I added a 32GB Micro SD card in the top, however only 4GB is usable
+![IMG_20190826_213019](https://user-images.githubusercontent.com/33874247/63743509-4e1de900-c851-11e9-8895-05932f5e27d4.jpg)
 
 Plug it in into a FTDI programmer board like the red one above. Remember to set the FTDI board to 3.3v (As 5v may damage the board), which is the right position on the switch when the USB port is facing up. In my programmer, I am supplying a 5v VCC supply voltage to the ESP32-CAM module so less uploading and brownout problems occur when using a less-powerful USB port or a module that has a "less-than-optimal" power regulator. When programming the board, pull GPIO 0 to ground (which is the small switch I put on the side in the left position). Remember to pull GPIO 0 to ground before plugging the USB port into your computer, or else the next step may not work and get stuck in a `Connecting....._____.....` loop and errors out.
+![IMG_20190826_213059](https://user-images.githubusercontent.com/33874247/63743510-4e1de900-c851-11e9-8e15-4be11c4a8a56.jpg)
 
-Set the board to the ESP Wrover Module and the settings below. Press the upload button on the Arduino IDE and when the serial monitor on the bottom starts saying `Connecting......._____ `, press the button on the bottom of the ESP32-CAM Module. This resets the board and allows the code to upload to the ESP32 module. The serial monitor will hard reset and tell you when it hard resets and is done uploading.
+Set the board to the ESP Wrover Module and the settings below. Press the upload button on the Arduino IDE.
+![Untitled](https://user-images.githubusercontent.com/33874247/63743513-4eb67f80-c851-11e9-9d97-67e0be1ba1ff.png)
+
+When the serial monitor on the bottom starts saying `Connecting......._____ `, press the button on the bottom of the ESP32-CAM Module. This resets the board and allows the code to upload to the ESP32 module. The serial monitor will hard reset and tell you when it hard resets and is done uploading.
+![IMG_20190826_213123](https://user-images.githubusercontent.com/33874247/63743511-4e1de900-c851-11e9-835b-2d610601327e.jpg)
 
 On some of my boards, the power regulator seemed to not operate well when plugged into any of my desktop's USB ports, and was in a constant restart loop. Due to this, I had to set the board to Flash Frequency: 40MHz, instead of the usual Flash Frequency: 80MHz in order to be able to run the code, though uploading on 80MHz ran without error until it ran the code iteself. I labeled these boards as "40" to keep track of them.
 
@@ -16,6 +22,7 @@ On some of my boards, the power regulator seemed to not operate well when plugge
 If you want to test the board, unplug the VCC power connection or the USB connection to the FTDI programmer and disconnect GPIO 0 from ground (right position in my board). Plug the power back in, and open the serial monitor running at a baud rate of 115200. Press the reset button located underneath the ESP32-CAM module and it should output a bunch of text, and then some serial output.
 
 If you want to run the board without the FTDI programmer, you need to supply the camera with 5v through the top left pin labeled as 5V (or 3.3v in the top left pin labaled 3V3), and connect the ground pin to GND. In my case, I used 3 standard 18650 3.7v Lithium Ion battery in series with a buck converter and charger. In most cases, using a lithium battery would be one of the better options, so modules stepping the voltage up to 5v and offing charge protection is quite common and cheap. You could either solder on a male USB header, connecting the red wire to 5V, black wire to GND, and optionally connecting the white and green data pins together. 
+![IMG_20190826_213206](https://user-images.githubusercontent.com/33874247/63743512-4e1de900-c851-11e9-8350-7a3d2d86ebb7.jpg)
 
 # Customizable Variables
 ## initDelay
@@ -35,6 +42,5 @@ This allocates the size of the (frame buffer)?. From the examples including PSRA
 
 # Additional Information
 The built-in flash LED is connected to one of the pins of the SD card, and I am unsure if removing it may damage the SD card operation. Whenever the SD card is being written, the flash will turn on, and is a hardware issue that can not be fixed in software (as far as I know). I would recommend taping over the light with something like electrical tape if this is an issue.
-
 
 
