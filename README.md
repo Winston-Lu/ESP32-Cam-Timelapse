@@ -21,7 +21,7 @@ When the serial monitor on the bottom starts saying `Connecting......._____ `, p
 ![IMG_20190826_213123](https://user-images.githubusercontent.com/33874247/63743511-4e1de900-c851-11e9-835b-2d610601327e.jpg)\
 &nbsp;
 
-On some of my boards, the power regulator seemed to not operate well when plugged into any of my desktop's USB ports, and was in a constant restart loop. Due to this, I had to set the board to Flash Frequency: 40MHz, instead of the usual Flash Frequency: 80MHz in order to be able to run the code, though uploading on 80MHz ran without error until it ran the code iteself. I labeled these boards as "40" to keep track of them.\
+On some of my boards, the power regulator seemed to not operate well when plugged into any of my desktop's USB ports, and was in a constant restart loop. Due to this, I had to set the board to Flash Frequency: 40MHz, instead of the usual Flash Frequency: 80MHz in order to be able to run the code. Due to the inadequite power regulator, uploading on 80MHz ran without error until it rus the code iteself. I labeled these boards as "40" to keep track of them.\
 &nbsp;
 
 # Running
