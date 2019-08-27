@@ -63,7 +63,7 @@ lenc: 0 or 1 — Lens correction\
 vflip: 0 or 1 — Flip camera vertically\
 hmirror: 0 or 1 — Flip camera horizontally\
 whitebal: 0 or 1 — White balance\
-dcw: 0 or 1 — No idea\
+dcw: 0 or 1 — No idea
 
 ### config.frame_size 
 This is how big you want the picture to be taken. By default, I set it to UXGA (1600px by 1200px), which averaged around 180kb - 230kb per picture. Changing the frame size allows for more photos to be stored onto the SD card (limited by the 4GB).
