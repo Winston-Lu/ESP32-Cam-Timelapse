@@ -10,7 +10,7 @@ Here is the ESP32-CAM module, I added a 32GB Micro SD card in the top, however o
 Plug it in into a FTDI programmer board like the red one above. Remember to set the FTDI board to 3.3v (As 5v may damage the board), which is the right position on the switch when the USB port is facing up. In my programmer, I am supplying a 5v VCC supply voltage to the ESP32-CAM module so less uploading and brownout problems occur when using a less-powerful USB port or a module that has a "less-than-optimal" power regulator. When programming the board, pull GPIO 0 to ground (which is the small switch I put on the side in the left position). Remember to pull GPIO 0 to ground before plugging the USB port into your computer, or else the next step may not work and get stuck in a `Connecting....._____.....` loop and errors out.
 ![IMG_20190826_213059](https://user-images.githubusercontent.com/33874247/63743510-4e1de900-c851-11e9-8e15-4be11c4a8a56.jpg)
 
-Set the board to the ESP Wrover Module and the settings below. If you do not see the ESP32 boards, follow [this guide here.](https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/) Once you set it to these options and selected the COM port that is connected to the FTDI programmer, press the upload button on the Arduino IDE.
+Set the board to the ESP Wrover Module and the settings below. If you do not see the ESP32 boards, follow [this guide here.](https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/) Once you set it to these options and selected the COM port that is connected to the FTDI programmer, press the upload button on the Arduino IDE.\
 ![Untitled](https://user-images.githubusercontent.com/33874247/63743513-4eb67f80-c851-11e9-9d97-67e0be1ba1ff.png)
 
 When the serial monitor on the bottom starts saying `Connecting......._____ `, press the button on the bottom of the ESP32-CAM Module. This resets the board and allows the code to upload to the ESP32 module. The serial monitor will hard reset and tell you when it hard resets and is done uploading.
@@ -25,22 +25,46 @@ If you want to run the board without the FTDI programmer, you need to supply the
 ![IMG_20190826_213206](https://user-images.githubusercontent.com/33874247/63743512-4e1de900-c851-11e9-8350-7a3d2d86ebb7.jpg)
 
 # Customizable Variables
-## initDelay
-This is the initial delay where the ESP32-CAM is put into deep sleep before waking up and taking pictures. By default I set it to 30 seconds, and the range can be from 0 seconds to 584,542 years (Max 64 bit integer in microseconds).
+### STARTUP_DELAY
+This is the initial delay from when the ESP32-CAM starts up, then  put into deep sleep before waking up and taking pictures. By default, I set it to 30 seconds, and the range can be from 0 seconds to 584,542 years (Max 64 bit integer in microseconds).
 
-## TIME_TO_SLEEP
+### PICTURE_DELAY
 This is the time the camera waits before taking the next picture. By default, I set it to 3 seconds.
 
-## config.frame_size (in the setup() function)
+### Camera Effects
+If you want to play around with effects, I would recommend using the `File > Examples > ESP32 > Camera > CameraWebServer.` example, upload using the HUGE APP (3MB no OTA) partition scheme and check what effects work best for you. In most cases, no extra effects need to be added, but it has been provide if you need it.
+
+Uncomment the `sensor_t * s = esp_camera_sensor_get();` line if you want to start modifying any effects
+quality: 10 to 63 — does the same as config.frame_size (see below)
+brightness: -2 to 2 — Adds/removes brightness in dark/really sunny areas
+contrast: -2 to 2 — As implied, effect not very noticable
+saturation: -2 to 2 — As implied.
+sharpness: -2 to 2 — As implied, sharpens image, though not too noticable
+wb_mode: 0 or 1 — White balance mode. 0 is auto and 1 is manual. I would leave it as 0. Balances the brightness/darkness of surrounding
+awb_gain: 0 or 1 — Auto White Balance gain.
+awc_value: 0 or 1 — Auto White Correction
+aec2: 0 or 1 — Automatic exposure control
+ae_level: -2 to 2 — Automatic exposure level, limit the maximum range for aec
+aec_value: 0 or 1 — Default value for exposure
+agc_gain: 0 or 1 — Auto gain control
+gainceiling: 1 to 64 — As implied
+bpc: 0 or 1 — Bits Per Component, or depth level
+wpc: 0 or 1 — No idea
+raw_gma: 0 or 1 — No idea
+lenc: 0 or 1 — Lens correction
+vflip: 0 or 1 — Flip camera vertically
+hmirror: 0 or 1 — Flip camera horizontally
+whitebal: 0 or 1 — White balance
+dcw: 0 or 1 — No idea
+
+### config.frame_size 
 This is how big you want the picture to be taken. By default, I set it to UXGA (1600px by 1200px), which averaged around 180kb - 230kb per picture. Changing the frame size allows for more photos to be stored onto the SD card (limited by the 4GB).
 
-## config.jpeg_quality (in the setup() function)
+### config.jpeg_quality 
 This is how good the picture should be. By default, I set it to 10, and the lower it is, the better quality it is. The range for this is 10-63, with 10 being the best quality and 63 being the worst.
 
-## config.fb_count (in the setup() function)
-This allocates the size of the (frame buffer)?. From the examples including PSRAM (which this module does), it defaults to 2, whereas without PSRAM it goes to 1. I would not recommend changing this unless there are some quality issues with the photos.
+### config.fb_count 
+This allocates the size of the frame buffer. From the examples including PSRAM (which this module does), it defaults to 2, whereas without PSRAM it goes to 1. I would not recommend changing this unless there are some quality issues with the photos that can not be filtered with other filters as seen under `File > Examples > ESP32 > Camera > CameraWebServer.`
 
 # Additional Information
 The built-in flash LED is connected to one of the pins of the SD card, and I am unsure if removing it may damage the SD card operation. Whenever the SD card is being written, the flash will turn on, and is a hardware issue that can not be fixed in software (as far as I know). I would recommend taping over the light with something like electrical tape if this is an issue.
-
-
