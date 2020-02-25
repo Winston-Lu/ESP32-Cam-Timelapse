@@ -56,14 +56,14 @@ ae_level: -2 to 2 — Automatic exposure level, limit the maximum range for aec\
 aec_value: 0 or 1 — Default value for exposure\
 agc_gain: 0 or 1 — Auto gain control\
 gainceiling: 1 to 64 — As implied\
-bpc: 0 or 1 — Bits Per Component, or depth level\
-wpc: 0 or 1 — No idea\
-raw_gma: 0 or 1 — No idea\
+bpc: 0 or 1 — Black Pixel correction\
+wpc: 0 or 1 — White pixel correction\
+raw_gma: 0 or 1 — Raw GMA (?)\
 lenc: 0 or 1 — Lens correction\
 vflip: 0 or 1 — Flip camera vertically\
 hmirror: 0 or 1 — Flip camera horizontally\
 whitebal: 0 or 1 — White balance\
-dcw: 0 or 1 — No idea
+dcw: 0 or 1 — Downsize EN (?)
 
 ### config.frame_size 
 This is how big you want the picture to be taken. By default, I set it to UXGA (1600px by 1200px), which averaged around 180kb - 230kb per picture. Changing the frame size allows for more photos to be stored onto the SD card (limited by the 4GB).
@@ -76,4 +76,4 @@ This allocates the size of the frame buffer. From the examples including PSRAM (
 &nbsp;
 
 # Additional Information
-The built-in flash LED is connected to one of the pins of the SD card, and I am unsure if removing it may damage the SD card operation. Whenever the SD card is being written, the flash will turn on, and is a hardware issue that can not be fixed in software (as far as I know). I would recommend taping over the light with something like electrical tape if this is an issue.
+The built-in flash LED is connected to one of the pins of the SD card. Desoldering the LED will not damage the circuit connecting to the SD card. Whenever the SD card is being written, the flash will turn on, and is a hardware issue that can not be changed in software (as far as I know). I would recommend taping over the light with something like electrical tape if you do not want to desolder the LED and don't mind the extra power draw.
