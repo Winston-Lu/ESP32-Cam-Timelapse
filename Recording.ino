@@ -13,13 +13,13 @@
 #include "driver/rtc_io.h"
 
 #define PICTURE_DELAY  3        /* Delay for picture taking (in seconds) */
-#define STARTUP_DELAY 30            /* Optional Time ESP32 will sleep on first boot in seconds*/
+#define STARTUP_DELAY 30            /* Optional Time ESP32 will sleep on first boot in seconds. Max delay is 584942 years before it overflows, so it wont be an issue soon*/
 #define uS_TO_S_FACTOR 1000000  /* Conversion factor for micro seconds to seconds */
 
 #ifdef STARTUP_DELAY 
-  const uint64_t totalTimeSleep = uS_TO_S_FACTOR * STARTUP_DELAY; /*Avoid integer overflow using unsigned 64 bit int*/
+  const uint64_t totalTimeSleep = uS_TO_S_FACTOR * STARTUP_DELAY; /*Avoid integer overflow using unsigned 64 bit int.*/
 #else
-  const byte totalTimeSleep = 0; //skip through the initial sleep and continue with regular code execution
+  const uint64_t totalTimeSleep = 0; //skip through the initial sleep and continue with regular code execution
 #endif
 
 #define PWDN_GPIO_NUM     32
@@ -49,9 +49,9 @@ void setup() {
   if(!bootCount){ //Make sure this scope runs only on the first run
     ++bootCount; //first boot
     esp_sleep_enable_timer_wakeup(totalTimeSleep); //Init timer
-    //Flash built-in LED 5 times indicating startup
+    //Flash built-in LED 3 times indicating startup
     pinMode(LED_1,OUTPUT);
-    for(byte i = 0; i<5; i++){
+    for(byte i = 0; i<3; i++){
       digitalWrite(LED_1, HIGH);delay(200);
       digitalWrite(LED_1, LOW);delay(200);
     }
@@ -60,6 +60,12 @@ void setup() {
     esp_deep_sleep_start();
   }else{rtc_gpio_hold_dis(GPIO_NUM_4);} //Re-enable GPIO 4 for SD Card
   
+  //Flash once when waking up from deep sleep
+  if(bootCount == 1){
+    pinMode(LED_1,OUTPUT);
+    digitalWrite(LED_1, HIGH);delay(1000);
+    digitalWrite(LED_1, LOW);
+  }
   //Setup camera pins
   camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
