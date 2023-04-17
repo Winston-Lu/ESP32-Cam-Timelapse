@@ -129,8 +129,8 @@ void setup() {
   if (err != ESP_OK) {Serial.printf("Camera init failed with error 0x%x", err);return;}
   
   // Init SD Card
-  uint8_t cardType = SD_MMC.cardType();
   if(!SD_MMC.begin()){Serial.println("SD Card Mount Failed");return;}
+  uint8_t cardType = SD_MMC.cardType();
   if(cardType == CARD_NONE){Serial.println("No SD Card attached");return;}
   
   // Take Picture with Camera
