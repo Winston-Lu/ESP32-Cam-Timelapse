@@ -14,7 +14,7 @@
 
 #define PICTURE_DELAY  3        /* Delay for picture taking (in seconds) */
 #define STARTUP_DELAY 30            /* Optional Time ESP32 will sleep on first boot in seconds. Max delay is 584942 years before it overflows, so it wont be an issue soon*/
-#define uS_TO_S_FACTOR 1000000  /* Conversion factor for micro seconds to seconds */
+#define uS_TO_S_FACTOR (1000000ULL)  /* Conversion factor for micro seconds to seconds */
 
 #ifdef STARTUP_DELAY 
   const uint64_t totalTimeSleep = uS_TO_S_FACTOR * STARTUP_DELAY; /*Avoid integer overflow using unsigned 64 bit int.*/
